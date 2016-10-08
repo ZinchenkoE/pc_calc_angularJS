@@ -12,12 +12,21 @@
             <h2>Форма создания инвентаря</h2>
             <label for="typeSelect">Тип</label>
             <select id="typeSelect"></select>
-            <label for="name">Модель</label>
-            <input id="name" type="text">
+            <label for="model">Модель</label>
+            <input id="model" type="text">
 
             <label for="price">Цена</label>
             <input id="price" type="number">
-            <button id="addKit" disabled>Создать комплект</button>
+            <button id="addKit">Создать комплект</button>
+        </form>
+    </div>
+    <div class="container">
+        <form>
+            <h2>Форма расчета цены комплекта</h2>
+            <div id="kitSelects"></div>
+            <br><br>
+            <button id="calc" disabled>Расчитать стоимость</button>
+            <span id="calcPrice"></span>
         </form>
     </div>
     <div class="container">
@@ -32,15 +41,6 @@
             </thead>
             <tbody></tbody>
         </table>
-    </div>
-    <div class="container">
-        <form>
-            <h2>Форма расчета цены комплекта</h2>
-            <div id="kitSelects"></div>
-            <br><br>
-            <button id="calc" disabled>Расчитать стоимость</button>
-            <span id="calcPrice"></span>
-        </form>
     </div>
 </body>
 </html>

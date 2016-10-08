@@ -1,10 +1,10 @@
 var typeKit = {
     1:{
-        value: 'motherboard',
+        value: 'Motherboard',
         name: 'материнская плата'
     },
     2:{
-        value: 'systemUnit',
+        value: 'SystemUnit',
         name: 'системный блок'
     },
     3:{
@@ -80,7 +80,7 @@ var kitsCollection = {
 };
 function $E(selector) { return document.querySelectorAll(selector); }
 function renderTypeSelect() {
-    var options = '<option value="" selected></option>';
+    var options = '';
     for(var type in typeKit){
         options += '<option value="' + typeKit[type].value + '">' + typeKit[type].name + '</option>';
     }
@@ -110,27 +110,78 @@ function renderKitSelects() {
     }
     $E('#kitSelects')[0].innerHTML = selects;
 }
-function Motherboard(type, model, price) {
-    this.type  = type;
-    this.model = model;
-    this.price = price;
+function Motherboard() {
+    this.type  = 1;
+    this.setPrice = function(price) {
+        if(price > 1 && price < 10000 ){
+            this.price = price;
+            return true;
+        }else return false;
+    };
+    this.setModel = function(model) {
+        if( /^[aA-zZ0-9аА-яЯ\ \-\\\.\,\/\(\)]+$/.test(model) ){
+            this.model = model;
+            return true;
+        }else return false;
+    };
+    this.getKit = function() {
+        return {type: this.type, model: this.model, price: this.price}
+    };
 }
-function SystemUnit(type, model, price) {
-    this.type  = type;
-    this.model = model;
-    this.price = price;
+function SystemUnit() {
+    this.type  = 2;
+    this.setPrice = function(price) {
+        if(price > 1 && price < 10000 ){
+            this.price = price;
+            return true;
+        }else return false;
+    };
+    this.setModel = function(model) {
+        if( /^[aA-zZ0-9аА-яЯ\ \-\\\.\,\/\(\)]+$/.test(model) ){
+            this.model = model;
+            return true;
+        }else return false;
+    };
+    this.getKit = function() {
+        return {type: this.type, model: this.model, price: this.price}
+    };
 }
-function CPU(type, model, price) {
-    this.type  = type;
-    this.model = model;
-    this.price = price;
+function CPU() {
+    this.type  = 3;
+    this.setPrice = function(price) {
+        if(price > 1 && price < 10000 ){
+            this.price = price;
+            return true;
+        }else return false;
+    };
+    this.setModel = function(model) {
+        if( /^[aA-zZ0-9аА-яЯ\ \-\\\.\,\/\(\)]+$/.test(model) ){
+            this.model = model;
+            return true;
+        }else return false;
+    };
+    this.getKit = function() {
+        return {type: this.type, model: this.model, price: this.price}
+    };
 }
-function RAM(type, model, price) {
-    this.type  = type;
-    this.model = model;
-    this.price = price;
+function RAM() {
+    this.type  = 4;
+    this.setPrice = function(price) {
+        if(price > 1 && price < 10000 ){
+            this.price = price;
+            return true;
+        }else return false;
+    };
+    this.setModel = function(model) {
+        if( /^[aA-zZ0-9аА-яЯ\ \-\\\.\,\/\(\)]+$/.test(model) ){
+            this.model = model;
+            return true;
+        }else return false;
+    };
+    this.getKit = function() {
+        return {type: this.type, model: this.model, price: this.price}
+    };
 }
-
 window.onload = function() {
     if(!localStorage.kit) localStorage.kit = JSON.stringify(kitsCollection);
     else kitsCollection = JSON.parse(localStorage.kit);
@@ -141,9 +192,9 @@ window.onload = function() {
         select.onchange = function() {
             var canCalc = true;
             $E('#kitSelects select').forEach(function(select) {
-                if(select.value == '') canCalc = false;
+                if(!select.value) canCalc = false;
             });
-            $E('#calc')[0].disabled = !canCalc
+            $E('#calc')[0].disabled = !canCalc;
             $E('#calcPrice')[0].innerHTML = '';
         }
     });
@@ -151,13 +202,33 @@ window.onload = function() {
         e.preventDefault();
         var price = 0;
         $E('#kitSelects select').forEach(function(select) {
-            price += kitsCollection[select.value].price;
+            price += +kitsCollection[select.value].price;
         });
         $E('#calcPrice')[0].innerHTML = 'Стоимость комплекта: ' + price + ' грн';
         return false;
     };
-    $E('#addKit')[0].onclick = function() {
-        
+    $E('#addKit')[0].onclick = function(e) {
+        e.preventDefault();
+        var Constructor = $E('#typeSelect')[0].value;
+        var model = $E('#model')[0].value;
+        var price = $E('#price')[0].value;
+        var newKit = new window[Constructor]();
+        if(newKit.setModel(model) && newKit.setPrice(price)){
+            console.log('Создан новый инвентарь: ', newKit);
+            var maxId = 0;
+            for(var k in kitsCollection){
+                if(+k > maxId) maxId = +k;
+            }
+            ++maxId;
+            kitsCollection[maxId] =  newKit.getKit();
+            localStorage.kit = JSON.stringify(kitsCollection);
+            renderTable();
+            renderKitSelects();
+        } else {
+            console.error('Некоректные данные для инвентаря!');
+            alert('Некоректные данные для инвентаря!');
+        }
+
     };
 };
 
