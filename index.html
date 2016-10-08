@@ -3,12 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
-    
-    <script>
-
-    </script>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
 </head>
 <body>
+    <div class="container">
+        <form id="addKitForm">
+            <h2>Форма создания инвентаря</h2>
+            <label for="typeSelect">Тип</label>
+            <select id="typeSelect"></select>
+            <label for="name">Модель</label>
+            <input id="name" type="text">
 
+            <label for="price">Цена</label>
+            <input id="price" type="number">
+            <button id="addKit">Создать комплект</button>
+        </form>
+    </div>
+    <div class="container">
+        <h2>Инвентарь</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Тип</th>
+                <th>Модель</th>
+                <th>Цена</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="container">
+        <form>
+            <h2>Форма расчета цены комплекта</h2>
+
+
+            <div id="kitSelects">
+                <!--<select id="motherboard">-->
+                    <!--<option value="1">111</option>-->
+                <!--</select>-->
+
+                <!--<label for="systemUnit">Системный блок</label>-->
+                <!--<select id="systemUnit">-->
+                    <!--<option value="1">111</option>-->
+                <!--</select>-->
+
+                <!--<label for="CPU">Процессор</label>-->
+                <!--<select id="CPU">-->
+                    <!--<option value="1">процессор</option>-->
+                <!--</select>-->
+
+                <!--<label for="RAM">Опереативная память</label>-->
+                <!--<select id="RAM">-->
+                    <!--<option value="1">111</option>-->
+                <!--</select>-->
+            </div>
+            <br><br>
+            <button id="calc">Расчитать стоимость</button>
+        </form>
+    </div>
 </body>
 </html>
