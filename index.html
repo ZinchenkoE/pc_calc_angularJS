@@ -17,7 +17,7 @@
 
             <label for="price">Цена</label>
             <input id="price" type="number">
-            <button id="addKit">Создать комплект</button>
+            <button id="addKit" disabled>Создать комплект</button>
         </form>
     </div>
     <div class="container">
@@ -36,30 +36,10 @@
     <div class="container">
         <form>
             <h2>Форма расчета цены комплекта</h2>
-
-
-            <div id="kitSelects">
-                <!--<select id="motherboard">-->
-                    <!--<option value="1">111</option>-->
-                <!--</select>-->
-
-                <!--<label for="systemUnit">Системный блок</label>-->
-                <!--<select id="systemUnit">-->
-                    <!--<option value="1">111</option>-->
-                <!--</select>-->
-
-                <!--<label for="CPU">Процессор</label>-->
-                <!--<select id="CPU">-->
-                    <!--<option value="1">процессор</option>-->
-                <!--</select>-->
-
-                <!--<label for="RAM">Опереативная память</label>-->
-                <!--<select id="RAM">-->
-                    <!--<option value="1">111</option>-->
-                <!--</select>-->
-            </div>
+            <div id="kitSelects"></div>
             <br><br>
-            <button id="calc">Расчитать стоимость</button>
+            <button id="calc" disabled>Расчитать стоимость</button>
+            <span id="calcPrice"></span>
         </form>
     </div>
 </body>

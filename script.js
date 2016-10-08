@@ -80,7 +80,7 @@ var kitsCollection = {
 };
 function $E(selector) { return document.querySelectorAll(selector); }
 function renderTypeSelect() {
-    var options = '';
+    var options = '<option value="" selected></option>';
     for(var type in typeKit){
         options += '<option value="' + typeKit[type].value + '">' + typeKit[type].name + '</option>';
     }
@@ -101,18 +101,63 @@ function renderKitSelects() {
     for(var type in typeKit){
         var selectId    = typeKit[type].value;
         var selectLabel = typeKit[type].name;
-        var options = '';
+        var options = '<option value="" selected></option>';
         for(var k in kitsCollection){
             if(kitsCollection[k].type == type) options += '<option value="' + k + '">' + kitsCollection[k].model + '</option>';
         }
-        selects += '<label for="' + selectId + '">' + selectLabel + '</label><select id="' + selectId + '">' + options + '</select><br><br>';
+        selects += '<label for="' + selectId + '">' + selectLabel + '</label>' +
+            '<select id="' + selectId + '">' + options + '</select><br><br>';
     }
     $E('#kitSelects')[0].innerHTML = selects;
 }
+function Motherboard(type, model, price) {
+    this.type  = type;
+    this.model = model;
+    this.price = price;
+}
+function SystemUnit(type, model, price) {
+    this.type  = type;
+    this.model = model;
+    this.price = price;
+}
+function CPU(type, model, price) {
+    this.type  = type;
+    this.model = model;
+    this.price = price;
+}
+function RAM(type, model, price) {
+    this.type  = type;
+    this.model = model;
+    this.price = price;
+}
+
 window.onload = function() {
     if(!localStorage.kit) localStorage.kit = JSON.stringify(kitsCollection);
+    else kitsCollection = JSON.parse(localStorage.kit);
     renderTypeSelect();
     renderTable();
     renderKitSelects();
+    $E('#kitSelects select').forEach(function(select) {
+        select.onchange = function() {
+            var canCalc = true;
+            $E('#kitSelects select').forEach(function(select) {
+                if(select.value == '') canCalc = false;
+            });
+            $E('#calc')[0].disabled = !canCalc
+            $E('#calcPrice')[0].innerHTML = '';
+        }
+    });
+    $E('#calc')[0].onclick = function(e) {
+        e.preventDefault();
+        var price = 0;
+        $E('#kitSelects select').forEach(function(select) {
+            price += kitsCollection[select.value].price;
+        });
+        $E('#calcPrice')[0].innerHTML = 'Стоимость комплекта: ' + price + ' грн';
+        return false;
+    };
+    $E('#addKit')[0].onclick = function() {
+        
+    };
 };
-// $E('')
+
