@@ -1,32 +1,47 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" data-ng-app="kitApp">
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
+    <script src="angular.min.js"></script>
+    <script src="angular-local-storage.min.js"></script>
     <script src="script.js"></script>
 </head>
-<body>
+<body data-ng-controller="MainCtrl">
     <div class="container">
         <form id="addKitForm">
             <h2>Форма создания инвентаря</h2>
-            <label for="typeSelect">Тип</label>
-            <select id="typeSelect"></select>
-            <label for="model">Модель</label>
-            <input id="model" type="text">
 
-            <label for="price">Цена</label>
-            <input id="price" type="number">
-            <button id="addKit">Создать комплект</button>
+            <label>Тип</label>
+            <select data-ng-model="typeNewKit" data-ng-init="typeNewKit=typeKit[0].value" data-ng-change="test()">
+                <option data-ng-repeat="type in typeKit" value="{{type.value}}">{{type.name}}</option>
+            </select>
+
+            <label>Модель</label>
+            <input data-ng-model="model">
+
+            <label>Цена</label>
+            <input data-ng-model="price" type="number">
+
+            <button data-ng-click="test()">Создать комплект</button>
         </form>
     </div>
     <div class="container">
         <form>
             <h2>Форма расчета цены комплекта</h2>
-            <div id="kitSelects"></div>
+            <div id="kitSelects">
+                <div data-ng-repeat="(key, type) in typeKit">
+                    <label>{{type.name}}</label>
+                    <select data-ng-model="type.selectPrice">
+                        <option data-ng-repeat="kit in kitsCollection | filter: {type: key}"
+                                value="{{kit.price}}">{{kit.model}} ({{kit.price}} грн)</option>
+                    </select>
+                    <br><br>
+                </div>
+            </div>
             <br><br>
-            <button id="calc" disabled>Расчитать стоимость</button>
-            <span id="calcPrice"></span>
+            <button data-ng-click="calc()">Расчитать стоимость</button><span>{{calPrice}}</span>
         </form>
     </div>
     <div class="container">
@@ -39,7 +54,11 @@
                 <th>Цена</th>
             </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+                <tr data-ng-repeat="kit in kitsCollection">
+                    <td>{{typeKit[kit.type].name}}</td><td>{{kit.model}}</td><td>{{kit.price}} грн</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 </body>
