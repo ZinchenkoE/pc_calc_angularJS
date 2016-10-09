@@ -1,20 +1,8 @@
 var typeKit = [
-    {
-        value: 'Motherboard',
-        name: 'материнская плата'
-    },
-    {
-        value: 'SystemUnit',
-        name: 'системный блок'
-    },
-    {
-        value: 'CPU',
-        name: 'процессор'
-    },
-    {
-        value: 'RAM',
-        name: 'опереативная память'
-    }
+    {name: 'материнская плата'},
+    {name: 'системный блок'},
+    {name: 'процессор'},
+    {name: 'опереативная память'}
 ];
 var kitsCollection = [
     {
@@ -78,80 +66,26 @@ var kitsCollection = [
         price: 400
     }
 ];
-function Motherboard() {
-    this.type  = 1;
-    this.setPrice = function(price) {
-        if(price > 1 && price < 10000 ){
-            this.price = price;
-            return true;
-        }else return false;
-    };
-    this.setModel = function(model) {
-        if( /^[aA-zZ0-9аА-яЯ\ \-\\\.\,\/\(\)]+$/.test(model) ){
-            this.model = model;
-            return true;
-        }else return false;
-    };
-    this.getKit = function() {
-        return {type: this.type, model: this.model, price: this.price}
-    };
-}
-function SystemUnit() {
-    this.type  = 2;
-}
-function CPU() {
-    this.type  = 3;
-}
-function RAM() {
-    this.type  = 4;
-}
 
+if(!localStorage.kit) localStorage.kit = JSON.stringify(kitsCollection);
+else kitsCollection = JSON.parse(localStorage.kit);
 
-
-
-var App = angular.module("kitApp", ["LocalStorageModule"]);
-
+var App = angular.module("pcKitApp",[]);
 App.controller("MainCtrl", function ($scope) {
     $scope.typeKit        = typeKit;
     $scope.kitsCollection = kitsCollection;
-    $scope.test = function  (){
-        console.log($scope);
+    $scope.addKit = function  (){
+        if($scope.addForm.$valid){
+            var newKit = { type: $scope.typeNewKit, model: $scope.model, price: $scope.price };
+            kitsCollection.push(newKit);
+            localStorage.kit = JSON.stringify(kitsCollection);
+        }
     };
     $scope.calc = function  (){
         var summ = 0;
         $scope.typeKit.forEach(function(select){
             summ += +select.selectPrice;
         });
-        if(summ) $scope.calPrice = 'Стоимость комплекта: ' + summ + ' грн';
+        if(summ) $scope.calcPrice = 'Стоимость комплекта: ' + summ + ' грн';
     };
 });
-
-//window.onload = function() {
-//    if(!localStorage.kit) localStorage.kit = JSON.stringify(kitsCollection);
-//    else kitsCollection = JSON.parse(localStorage.kit);
-
-
-//    $E('#addKit')[0].onclick = function(e) {
-//        e.preventDefault();
-//        var Constructor = $E('#typeSelect')[0].value;
-//        var model = $E('#model')[0].value;
-//        var price = $E('#price')[0].value;
-//        var newKit = new window[Constructor]();
-//        if(newKit.setModel(model) && newKit.setPrice(price)){
-//            console.log('Создан новый инвентарь: ', newKit);
-//            var maxId = 0;
-//            for(var k in kitsCollection){
-//                if(+k > maxId) maxId = +k;
-//            }
-//            ++maxId;
-//            kitsCollection[maxId] =  newKit.getKit();
-//            localStorage.kit = JSON.stringify(kitsCollection);
-//            renderTable();
-//            renderKitSelects();
-//        } else {
-//            console.error('Некоректные данные для инвентаря!');
-//            alert('Некоректные данные для инвентаря!');
-//        }
-//    };
-//};
-//
